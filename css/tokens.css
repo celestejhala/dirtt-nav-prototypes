@@ -1,0 +1,111 @@
+/* Design tokens — every component reads from these, so sizes stay consistent
+   even where the Figma frames drifted. */
+:root {
+  /* Colour */
+  --c-header: #535761;
+  --c-header-2: #70747e; /* lighter slate: open accordion rows, mobile sub-panels */
+  --c-line: rgba(255, 255, 255, 0.6);
+  --c-ink: #111;
+  --c-muted: #6b6f78;
+  --c-black: #000;
+  --c-page: #fff;
+  --c-placeholder: #f1f1f1;
+  --c-placeholder-2: #e6e6e6;
+  --c-focus: #2f6fed;
+  --c-nav-pressed: rgba(255, 255, 255, 0.72);
+  --c-nav-disabled: #94989e; /* sampled from the A wires (Resources open) */
+
+  /* Type */
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fs-eyebrow: 10px;
+  --fs-sm: 12px;
+  --fs-md: 14px;
+  /* Desktop nav + panels, measured from the 1440px Figma frames.
+     clamp() steps them down between 1024px and 1440px so the bar never wraps. */
+  --ls-ui: 0.02em;
+  --ls-nav: 0.03em;
+  --fs-logo: 16px;
+  --fs-nav: clamp(14px, 1.12vw, 16px);
+  --fs-btn: clamp(13px, 0.98vw, 14px);
+  --fs-link: clamp(15px, 1.12vw, 16px);       /* A links; B/C level 3 links */
+  --fs-l2: clamp(16px, 1.25vw, 18px);         /* B/C level 2 links */
+  --fs-panel-eyebrow: 12px;
+  --fs-panel-title: clamp(22px, 1.81vw, 26px);
+  --fs-card-title: clamp(15px, 1.12vw, 16px);
+  --fs-card-desc: 11px;
+  --fs-search: 20px;     /* desktop search drawer: a step up from 16px body text */
+
+  /* Layout */
+  --max: 1440px;
+  --gutter: clamp(16px, 3.4vw, 48px);
+  --header-h: clamp(64px, 5.21vw, 75px);
+  --header-h-mobile: 52px;
+  --nav-gap: clamp(16px, calc(3.85vw - 23.4px), 32px);   /* 16px @1024 → 32px @1440 */
+  --logo-col: clamp(96px, calc(29.3vw - 200px), 222px); /* logo → first nav item: 100px @1024 → 222px @1440 */
+  --btn-h: 34px;
+  --btn-pad: 17px;
+  --actions-gap: clamp(16px, 2.2vw, 32px);
+  --drawer-w: min(100vw, 420px);
+
+  /* Mobile (< 1024px) type sizes from the 375px Figma frames */
+  --m-fs-row: 16px;        /* drawer level 1 rows */
+  --m-fs-link: 16px;       /* accordion / drill-down links, footer links */
+  --m-fs-eyebrow: 12px;
+  --m-fs-btn: 14px;
+  --m-btn-h: 44px;
+  --m-icon-btn: 36px;
+  --m-field-h: 56px;
+  --m-fs-field: 18px;
+
+  /* Mobile spacing system: every item is a fixed-height row, and the only extra
+     space is one group gap before each new group. 8px grid; tappable rows ≥ 44px. */
+  --m-row-l1: 56px;     /* drawer rows, accordion headers */
+  --m-row-l2: 44px;     /* submenu links, View/All, footer toggles + links, legal */
+  --m-row-l3: 36px;     /* child links (under Walls) */
+  --m-row-label: 32px;  /* column labels, sit directly on their links */
+  --m-gap: 16px;        /* before each new group */
+  --m-section-pad: 8px 0 16px;  /* inside an open accordion item */
+  --m-panel-pad: 24px;  /* drill-down bar → first item */
+  --m-section-gap: 32px; /* between major blocks (list → search, footer sections) */
+  --panel-pad-y: 24px;
+  --panel-pad-l: 48px;
+  --panel-pad-r: 32px;
+  --panel-col-w: clamp(190px, 17.4vw, 250px);       /* fixed column pitch, B + C */
+  --panel-title-w-full: clamp(220px, 24vw, 345px);  /* C: logo edge → first column */
+  --link-pad: 11px;          /* ~43px between links */
+  --list-panel-w: 300px;     /* A dropdown */
+  --list-panel-overlap: calc(var(--header-h) * 0.21); /* A dropdown overlaps the bar by ~16px */
+  --card-w: clamp(170px, 14.6vw, 210px);  /* B + C stacked card and tile */
+  --card-h: 180px;                        /* stacked card and tile */
+  /* B/C row grid: 4 rows (4 links, or a label + 3 links) run from the card's top edge
+     to its bottom edge — first row's cap height to last row's baseline.
+     In Inter the cap height (0.727em) sits centred in the line box. */
+  --row-h: calc((var(--card-h) - var(--fs-l2) * 0.727) / 3);
+  --card-offset: calc(var(--row-h) / 2 - var(--fs-l2) * 0.3635); /* row top → cap top */
+  --l3-row-h: 42px;                       /* level 3 links sit tighter under their parent */
+  --card-pad: 0 24px 14px;
+
+  /* Motion */
+  --dur-fast: 180ms;
+  --dur: 240ms;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  /* B/C mobile drill-down: slower and smoother so the slide to level 2 is easy to follow */
+  --dur-drill: 650ms;
+  --ease-drill: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --shadow: 0 14px 32px rgba(0, 0, 0, 0.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur: 0ms;
+    --dur-drill: 0ms;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0ms !important;
+    animation: none !important;
+  }
+}

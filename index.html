@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DIRTT nav prototype</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/patterns.css" />
+  </head>
+  <body>
+    <div id="header-mount"></div>
+
+    <main class="page">
+      <section class="page-intro">
+        <p class="kicker" id="pattern-kicker"></p>
+        <h1 id="pattern-name"></h1>
+        <p id="pattern-desc"></p>
+      </section>
+      <div class="ph ph-hero"></div>
+      <div class="ph-grid">
+        <div class="ph"></div>
+        <div class="ph"></div>
+        <div class="ph"></div>
+      </div>
+    </main>
+
+    <div id="footer-mount"></div>
+
+    <div class="switcher" role="group" aria-label="Navigation pattern"></div>
+
+    <script src="js/nav-data.js"></script>
+    <script src="js/nav.js"></script>
+  </body>
+</html>
