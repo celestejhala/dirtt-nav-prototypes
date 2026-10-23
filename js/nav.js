@@ -461,7 +461,7 @@
       document.body.classList.add("drawer-open");
       drawer.inert = false;
       menuBtn.setAttribute("aria-expanded", "true");
-      setTimeout(() => $(".close-btn", root).focus({ preventScroll: true }), dur(200));
+      setTimeout(() => $(".close-btn", root).focus({ preventScroll: true }), dur(650));
     }
 
     function closeDrawer() {

@@ -185,8 +185,9 @@ p, h1, h2, h3 { margin: 0; }
   transform: translateX(100%); visibility: hidden;
   transition: transform var(--dur) var(--ease-out), visibility 0s linear var(--dur);
 }
-body.drawer-open .scrim { opacity: 1; visibility: visible; transition: opacity var(--dur) ease; }
-body.drawer-open .drawer { transform: none; visibility: visible; transition: transform var(--dur) var(--ease-out); }
+/* Opening the mobile menu uses the same slower, smoother timing as the drill-down */
+body.drawer-open .scrim { opacity: 1; visibility: visible; transition: opacity var(--dur-drill) ease; }
+body.drawer-open .drawer { transform: none; visibility: visible; transition: transform var(--dur-drill) var(--ease-drill); }
 
 .drawer-track { position: relative; height: 100%; }
 .pane {
@@ -282,6 +283,10 @@ body.drawer-open .drawer { transform: none; visibility: visible; transition: tra
 .acc-item.is-open { background: var(--c-header-2); }
 .acc-item.is-open .chev { transform: rotate(180deg); }
 .collapse { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--dur) var(--ease-out); }
+/* Menu accordions (A and B mobile) expand at the drill-down speed */
+.drawer .acc-item { transition: background var(--dur-drill) ease; }
+.drawer .collapse { transition: grid-template-rows var(--dur-drill) var(--ease-drill); }
+.drawer .acc-item .chev { transition: transform var(--dur-drill) var(--ease-drill); }
 .is-open > .collapse { grid-template-rows: 1fr; }
 .collapse > * { overflow: hidden; min-height: 0; }
 .acc-content { padding: var(--m-section-pad); padding-left: 16px; }
