@@ -3,24 +3,20 @@
 
   const PATTERNS = {
     hover: {
-      short: "A - Hover",
-      name: "Hover – 1 column",
+      label: "Pattern A", // hover, single column
       desc: "Hover a top-level item to open a single-column menu; clicking the item goes to its page. Resources only opens on hover, and clicking it does nothing. On mobile, the menu drawer uses accordions.",
     },
     variable: {
-      short: "B - Click",
-      name: "Click – variable column + hover indicator",
+      label: "Pattern B", // click, variable column
       desc: "Click a top-level item to open a panel sized to its content. An underline grows on hover to show the item is clickable. On mobile, the menu drawer uses accordions, and each section starts with a View all link.",
     },
     full: {
-      short: "C - Click",
-      name: "Click – full width + hover indicator",
+      label: "Pattern C", // click, full width
       desc: "Click a top-level item to open a full-width panel, with its link columns lined up under the nav. An underline grows on hover. On mobile, tapping an item slides in its submenu.",
     },
     textlinks: {
       base: "variable", // shares B's desktop layout and behaviour
-      short: "D - Click",
-      name: "Click – variable column, text links + image",
+      label: "Pattern D", // click, text links + image
       desc: "Like B, but every level 2 item is a plain text link, and each section's View all link is paired with a placeholder image. On mobile, the menu drawer uses B's accordions, with search at the top and the buttons fixed to the bottom.",
     },
   };
@@ -633,11 +629,9 @@
     document.body.dataset.variant = pattern; // which prototype (A–D)
 
     $("#header-mount").innerHTML = headerHTML(pattern) + drawerHTML(pattern);
-    const keys = Object.keys(PATTERNS);
-    $("#pattern-kicker").textContent = `Pattern ${keys.indexOf(pattern) + 1} of ${keys.length}`;
-    $("#pattern-name").textContent = PATTERNS[pattern].name;
+    $("#pattern-name").textContent = PATTERNS[pattern].label;
     $("#pattern-desc").textContent = PATTERNS[pattern].desc;
-    document.title = `${PATTERNS[pattern].short} · DIRTT nav prototype`;
+    document.title = `${PATTERNS[pattern].label} · DIRTT nav prototype`;
 
     // In B and C, only one of the nav menu and the search drawer is open at a time.
     // In A, menus open on hover, so passing over the nav mustn't close an open search;
@@ -678,7 +672,7 @@
     sw.innerHTML =
       `<span class="switcher-thumb" aria-hidden="true"></span>` +
       Object.entries(PATTERNS)
-        .map(([key, p]) => `<button type="button" data-pattern="${key}" aria-pressed="false">${p.short}</button>`)
+        .map(([key, p]) => `<button type="button" data-pattern="${key}" aria-pressed="false">${p.label}</button>`)
         .join("");
     sw.addEventListener("click", (e) => {
       const b = e.target.closest("button[data-pattern]");

@@ -369,7 +369,6 @@ body.drawer-open .drawer { transform: none; visibility: visible; transition: tra
 /* ---------- Page placeholder ---------- */
 .page { max-width: var(--max); margin: 0 auto; padding: 48px var(--gutter) 96px; }
 .page-intro { max-width: 640px; margin-bottom: 32px; }
-.kicker { font-size: var(--fs-sm); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-muted); margin-bottom: 8px; }
 .page-intro h1 { font-size: clamp(26px, 3vw, 36px); letter-spacing: -0.02em; margin-bottom: 12px; }
 .page-intro p:last-child { font-size: 15px; line-height: 1.55; color: #3d4048; }
 .ph { background: var(--c-placeholder); }
