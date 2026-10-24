@@ -76,6 +76,13 @@
   --list-panel-w: 300px;     /* A dropdown */
   --list-panel-overlap: calc(var(--header-h) * 0.21); /* A dropdown overlaps the bar by ~16px */
   --card-w: clamp(170px, 14.6vw, 210px);  /* B + C stacked card and tile */
+  /* D: one gutter between every column. Wider than the ~43px of air between link rows,
+     so columns read as separate groups rather than one block. */
+  --panel-gutter: clamp(56px, 6.67vw, 96px);   /* 96px @1440 */
+  --panel-pad-x-d: clamp(56px, 5vw, 72px);    /* D panel side padding: 72px @1440 */
+  --panel-pad-y-d: 48px;                      /* D: visible space above the first line and below the last */
+  --fs-panel-title-d: clamp(26px, 2.1vw, 30px); /* D level 1: 30px vs 18px level 2 (1.67×) */
+  --c-l3: #555963;                              /* level 3 links: one step quieter than level 2 */
   --card-h: 180px;                        /* stacked card and tile */
   /* B/C row grid: 4 rows (4 links, or a label + 3 links) run from the card's top edge
      to its bottom edge — first row's cap height to last row's baseline.

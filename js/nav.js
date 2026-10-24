@@ -71,7 +71,7 @@
     const last = groups[groups.length - 1].links;
     if (place === "own") groups.push({ links: [f.title] });
     if (place === "append") last.push(f.title);
-    if (place === "prepend") last.unshift(f.title);
+    if (place === "after-first") groups[0].links.push(f.title);
     return groups;
   }
 

@@ -136,3 +136,26 @@
 .panel-feature:hover .feature-media { background: var(--c-placeholder-2); }
 .panel-feature .panel-title { align-self: flex-start; }
 .placeholder-icon { width: 32px; height: 32px; }
+
+/* D composition (design audit):
+   - columns size to their content and are separated by one wide, consistent gutter
+     (96px @1440), instead of a fixed 250px pitch that left 24-116px of uneven space
+   - equal, more generous panel padding on both sides, and more air above and below
+   - hierarchy (L1 > L2 > L3): View all is the largest and heaviest text (30px/600);
+     L2 links are medium (18px/500); L3 child links are regular and a step quieter in
+     colour; column labels get more tracking for legibility */
+body[data-variant="textlinks"] .panel--mega .panel-inner {
+  gap: var(--panel-gutter);
+  /* Equal visible space above the first line and below the last. Each row's line box
+     already overhangs its text by --card-offset top and bottom, so subtract it. */
+  padding: calc(var(--panel-pad-y-d) - var(--card-offset)) var(--panel-pad-x-d);
+}
+body[data-variant="textlinks"] .panel-col { min-width: 0; padding-right: 0; }
+/* The image + View all group grows with a long title, so the title never eats into the gutter */
+body[data-variant="textlinks"] .panel-feature { margin-right: 0; width: max-content; min-width: var(--card-w); }
+body[data-variant="textlinks"] .panel-feature .panel-title {
+  font-size: var(--fs-panel-title-d); font-weight: 600; letter-spacing: 0;
+}
+body[data-variant="textlinks"] .panel--mega .link-list:not(.link-list--sub) > li > .nav-link { font-weight: 500; }
+body[data-variant="textlinks"] .panel--mega .link-list--sub .nav-link { color: var(--c-l3); }
+body[data-variant="textlinks"] .panel--mega .eyebrow { font-weight: 500; letter-spacing: 0.08em; }
