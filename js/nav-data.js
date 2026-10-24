@@ -14,6 +14,7 @@
  *              `style` sets the card in B and C: "stacked" (default) = image, title,
  *              description; "tile" = grey box with the title inside.
  *   extraFeature  a second card shown after the first, in C (full width) only.
+ *   inListD    overrides `inList` in D ("prepend" = added to the start of the last group).
  */
 window.DIRTT_DATA = {
   nav: [
@@ -47,6 +48,7 @@ window.DIRTT_DATA = {
         title: "COVE™",
         desc: "Lorem ipsum dolor sit amet consectetur. Ultricies dictum dui cursus interdum.",
         inList: "append",
+        inListD: "prepend", // D: COVE sits above Doors
       },
     },
     {

@@ -120,3 +120,19 @@
 /* A spaces sub-links like regular links */
 [data-pattern="hover"] .panel .link-list--sub .nav-link { padding: var(--link-pad) 0; }
 [data-pattern="hover"] .panel .link-list--sub { margin: 0; }
+
+/* ---------- 4. D — B's layout, text links only, View all as an image + link group ---------- */
+[data-variant="textlinks"] .panel-feature {
+  flex: none; display: flex; flex-direction: column;
+  /* same footprint as a card, so 4-row columns still align top and bottom with it */
+  width: var(--card-w); height: var(--card-h); margin-top: var(--card-offset);
+  margin-right: calc(var(--panel-col-w) - var(--card-w));
+}
+.panel-feature .feature-media {
+  flex: 1; min-height: 0; margin-bottom: 12px;
+  display: grid; place-items: center; color: #b3b6bc;
+  transition: background var(--dur) ease;
+}
+.panel-feature:hover .feature-media { background: var(--c-placeholder-2); }
+.panel-feature .panel-title { align-self: flex-start; }
+.placeholder-icon { width: 32px; height: 32px; }

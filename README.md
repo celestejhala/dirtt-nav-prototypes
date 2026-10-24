@@ -21,6 +21,7 @@ The switcher pill at the bottom of the page changes the pattern. Each pattern al
 | A – Hover – 1 column | `index.html?pattern=hover` | Opens on hover. Top-level items are links, except Resources, which is label-only. | Accordion; the label goes to the page and the chevron expands |
 | B – Click – variable column + hover indicator | `index.html?pattern=variable` | Opens on click. The panel fits its content and lines up under its trigger. | Accordion; the whole row expands, and each section starts with a View all link |
 | C – Click – full width + hover indicator | `index.html?pattern=full` | Opens on click. The panel spans the full width, and its columns line up with the nav. | Drill-down sub-panels |
+| D – Click – variable column, text links + image | `index.html?pattern=textlinks` | B's panel, with every level 2 item as a text link (no cards or tiles) and each View all link paired with a placeholder image. COVE™ sits above Doors. | B's accordion, with search at the top and the buttons fixed to the bottom |
 
 The footer is the same in every pattern. On mobile its three link groups become an accordion that keeps only one section open at a time.
 

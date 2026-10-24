@@ -17,6 +17,12 @@
       name: "Click – full width + hover indicator",
       desc: "Click a top-level item to open a full-width panel, with its link columns lined up under the nav. An underline grows on hover. On mobile, tapping an item slides in its submenu.",
     },
+    textlinks: {
+      base: "variable", // shares B's desktop layout and behaviour
+      short: "D - Click",
+      name: "Click – variable column, text links + image",
+      desc: "Like B, but every level 2 item is a plain text link, and each section's View all link is paired with a placeholder image. On mobile, the menu drawer uses B's accordions, with search at the top and the buttons fixed to the bottom.",
+    },
   };
 
   const mqDesktop = matchMedia("(min-width: 1024px)");
@@ -34,6 +40,7 @@
     search: `<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m10.5 10.5 3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`,
     menu: `<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 5h9M3.5 8h9M3.5 11h9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`,
     close: `<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 4.5 7 7m0-7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    image: `<svg class="placeholder-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="9" cy="10" r="1.6" fill="currentColor"/><path d="m4 17 5-5 4 4 2.5-2.5L20 17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`,
     arrow: `<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9.5M9 4.5 12.5 8 9 11.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   };
 
@@ -57,11 +64,14 @@
 
   // Groups for list-style menus (hover dropdown, accordion, drill-down):
   // the feature card becomes a plain link where the wires show one.
-  function listGroups(item) {
+  function listGroups(item, pattern) {
     const groups = item.groups.map((g) => ({ ...g, links: [...g.links] }));
     const f = item.feature;
-    if (f?.inList === "own") groups.push({ links: [f.title] });
-    if (f?.inList === "append") groups[groups.length - 1].links.push(f.title);
+    const place = (pattern === "textlinks" && f?.inListD) || f?.inList;
+    const last = groups[groups.length - 1].links;
+    if (place === "own") groups.push({ links: [f.title] });
+    if (place === "append") last.push(f.title);
+    if (place === "prepend") last.unshift(f.title);
     return groups;
   }
 
@@ -80,6 +90,23 @@
     if (pattern === "hover") {
       return `<div class="panel panel--list" data-id="${item.id}" id="panel-${item.id}">
         <div class="panel-inner">${listGroups(item).map(groupHTML).join("")}</div></div>`;
+    }
+    if (pattern === "textlinks") {
+      // D: text links only (feature links become list items, no tiles), and the
+      // View all link is an image + link group. Resources has no View all, so no image.
+      const cols = listGroups(item, pattern).map((g, i) => `<div class="panel-col">${groupHTML(g, i + 1)}</div>`);
+      return `<div class="panel panel--mega" data-id="${item.id}" id="panel-${item.id}">
+        <div class="panel-inner">
+          ${
+            item.all
+              ? `<a class="panel-feature stagger" style="--i:0" href="#">
+                  <span class="feature-media" aria-hidden="true">${ICON.image}</span>
+                  <span class="panel-title">${item.all}</span>
+                </a>`
+              : ""
+          }
+          ${cols.join("")}
+        </div></div>`;
     }
     const cols = item.groups.map((g, i) => `<div class="panel-col">${groupHTML(g, i + 1)}</div>`);
     return `<div class="panel panel--mega" data-id="${item.id}" id="panel-${item.id}">
@@ -134,9 +161,9 @@
   }
 
   /* ---- Mobile drawer ---- */
-  function mobileMenuHTML(item, { withAll }) {
+  function mobileMenuHTML(item, { withAll, pattern }) {
     const all = withAll && item.all ? `<a class="nav-link m-all stagger" style="--i:0" href="#">${item.all}</a>` : "";
-    return `<div class="m-menu">${all}${listGroups(item)
+    return `<div class="m-menu">${all}${listGroups(item, pattern)
       .map((g, i) => groupHTML(g, i + 1))
       .join("")}</div>`;
   }
@@ -164,12 +191,24 @@
                 <button type="button" class="m-row acc-trigger" aria-expanded="false" aria-controls="acc-${it.id}">
                   <span class="m-label">${it.label}</span>${ICON.chevDown}
                 </button>
-                <div class="collapse" id="acc-${it.id}"><div><div class="acc-content">${mobileMenuHTML(it, { withAll: true })}</div></div></div>
+                <div class="collapse" id="acc-${it.id}"><div><div class="acc-content">${mobileMenuHTML(it, { withAll: true, pattern })}</div></div></div>
               </li>`,
       full: (it) => `<li><button type="button" class="m-row drill-trigger" data-id="${it.id}">
                 <span class="m-label">${it.label}</span>${ICON.chevRight}</button></li>`,
     };
+    rowHTML.textlinks = rowHTML.variable; // D uses B's accordion
     const rows = DATA.nav.map(rowHTML[pattern]).join("");
+    const ctas = `<div class="drawer-ctas${pattern === "textlinks" ? " drawer-ctas--sticky" : ""}">
+              <a class="btn btn-solid" href="#">${DATA.ctas.primary}</a>
+              <a class="btn btn-outline" href="#">${DATA.ctas.secondary}</a>
+            </div>`;
+    const searchForm = `<form class="drawer-search${pattern === "textlinks" ? " drawer-search--top" : ""}" role="search" onsubmit="return false">
+              <label class="field">
+                <span class="sr-only">Search</span>
+                <input type="search" placeholder="Enter search term" />
+                <button type="submit" class="field-go" aria-label="Search">${ICON.arrow}</button>
+              </label>
+            </form>`;
 
     return `
     <div class="scrim" data-close></div>
@@ -180,20 +219,12 @@
             <a class="logo" href="#">Logo</a>
             <button type="button" class="icon-btn close-btn" data-close aria-label="Close menu">${ICON.close}</button>
           </div>
-          <div class="pane-body">
-            <div class="drawer-ctas">
-              <a class="btn btn-solid" href="#">${DATA.ctas.primary}</a>
-              <a class="btn btn-outline" href="#">${DATA.ctas.secondary}</a>
-            </div>
-            <ul class="drawer-list">${rows}</ul>
-            <form class="drawer-search" role="search" onsubmit="return false">
-              <label class="field">
-                <span class="sr-only">Search</span>
-                <input type="search" placeholder="Enter search term" />
-                <button type="submit" class="field-go" aria-label="Search">${ICON.arrow}</button>
-              </label>
-            </form>
-          </div>
+          ${
+            // D: search at the top of the list, buttons fixed to the bottom of the drawer
+            pattern === "textlinks"
+              ? `<div class="pane-body">${searchForm}<ul class="drawer-list">${rows}</ul></div>${ctas}`
+              : `<div class="pane-body">${ctas}<ul class="drawer-list">${rows}</ul>${searchForm}</div>`
+          }
         </div>
         ${
           pattern !== "full"
@@ -598,7 +629,8 @@
     ac = new AbortController();
     const { signal } = ac;
     document.body.classList.remove("drawer-open");
-    document.body.dataset.pattern = pattern;
+    document.body.dataset.pattern = PATTERNS[pattern].base || pattern; // layout rules
+    document.body.dataset.variant = pattern; // which prototype (A–D)
 
     $("#header-mount").innerHTML = headerHTML(pattern) + drawerHTML(pattern);
     const keys = Object.keys(PATTERNS);
@@ -656,7 +688,7 @@
       history.replaceState(null, "", url);
       render(b.dataset.pattern);
     });
-    addEventListener("resize", () => updateSwitcher(document.body.dataset.pattern));
+    addEventListener("resize", () => updateSwitcher(document.body.dataset.variant));
   }
 
   // Lets iOS Safari apply :active (tapped) styles on mobile.
@@ -688,5 +720,5 @@
   initSwitcher();
   initFooter();
   render(getPattern());
-  document.fonts?.ready.then(() => updateSwitcher(document.body.dataset.pattern));
+  document.fonts?.ready.then(() => updateSwitcher(document.body.dataset.variant));
 })();
