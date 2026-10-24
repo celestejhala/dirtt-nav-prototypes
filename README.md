@@ -8,6 +8,8 @@ Three responsive navigation patterns from the *DIRTT Navigation Wires* Figma fil
 
 Open `index.html` in a browser, or serve the folder with any static host. The live link above is published with GitHub Pages from the `main` branch.
 
+When you push changes, bump the `?v=` number on the CSS and JS links in `index.html`. Browsers keep copies of these files for up to 10 minutes, and without a new number someone can get the new page with old scripts, which can break it.
+
 ```bash
 python3 -m http.server 8000
 ```
