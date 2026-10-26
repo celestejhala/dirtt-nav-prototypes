@@ -121,6 +121,7 @@ p, h1, h2, h3 { margin: 0; }
 
 /* ---------- Shared link styles (desktop panels) ---------- */
 .eyebrow {
+  /* Label-only column titles are the one exception to sentence case: they stay in capitals */
   font-size: var(--fs-eyebrow); letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--c-muted); margin-bottom: 8px;
 }
@@ -331,6 +332,7 @@ body.drawer-open .drawer { transform: none; visibility: visible; transition: tra
 .footer-heading { margin-bottom: 20px; }
 .footer-toggle {
   width: 100%; display: flex; align-items: center; justify-content: space-between;
+  /* Footer column titles are labels too, so they share the capitals exception */
   font-size: var(--fs-eyebrow); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
   pointer-events: none; cursor: default;
 }

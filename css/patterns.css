@@ -143,7 +143,7 @@
    - equal, more generous panel padding on both sides, and more air above and below
    - hierarchy (L1 > L2 > L3): View all is the largest and heaviest text (30px/600);
      L2 links are medium (18px/500); L3 child links are regular and a step quieter in
-     colour; column labels get more tracking for legibility */
+     colour; column labels are medium weight with more tracking */
 body[data-variant="textlinks"] .panel--mega .panel-inner {
   gap: var(--panel-gutter);
   /* Equal visible space above the first line and below the last. Each row's line box

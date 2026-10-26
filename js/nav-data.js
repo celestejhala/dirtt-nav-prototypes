@@ -5,7 +5,7 @@
  * Nav item fields:
  *   label      top-level label
  *   href       top-level link (omit + set labelOnly for items that only open a menu)
- *   all        "View / All" link shown first in click panels + mobile drill-down
+ *   all        "Explore / All" link shown first in click panels + mobile menus
  *   groups     columns of links; a link is a string or { label, children: [...] }
  *   feature    card in click panels. `inList` controls how it appears in list-style
  *              menus (hover, accordion, drill-down): "own" = its own group,
@@ -22,11 +22,11 @@ window.DIRTT_DATA = {
       id: "services",
       label: "Services",
       href: "#services",
-      all: "View services",
+      all: "Explore services",
       groups: [
         {
           eyebrow: "Who we work with",
-          links: ["Architects & designers", "General contractors", "Owners"],
+          links: ["Architects and designers", "General contractors", "Owners"],
         },
       ],
       feature: {
@@ -70,8 +70,8 @@ window.DIRTT_DATA = {
       labelOnly: true,
       groups: [
         {
-          eyebrow: "Files & specs",
-          links: ["CAD files", "Acoustic performance (TBD)", "Finishes & materials"],
+          eyebrow: "Files and specs",
+          links: ["CAD files", "Acoustic performance (TBD)", "Finishes and materials"],
         },
         { eyebrow: "Inspiration (TBD)", links: ["Insights (TBD)", "Image gallery (TBD)"] },
       ],
@@ -85,7 +85,7 @@ window.DIRTT_DATA = {
       id: "about",
       label: "About us",
       href: "#about",
-      all: "View about us",
+      all: "Explore about us",
       groups: [{ links: ["Sustainability", "News", "Investors", "Contact us"] }],
       feature: {
         title: "Award",
@@ -106,7 +106,7 @@ window.DIRTT_DATA = {
       { id: "social", title: "Social", links: ["Instagram", "YouTube", "LinkedIn"] },
     ],
     newsletter: "Stay up to date with our newsletter",
-    legal: ["Accessibility", "Privacy policy", "Intellectual property", "Terms & conditions"],
+    legal: ["Accessibility", "Privacy policy", "Intellectual property", "Terms and conditions"],
     copyright: "© DIRTT 2026",
   },
 };

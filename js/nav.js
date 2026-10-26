@@ -8,7 +8,7 @@
     },
     variable: {
       label: "Pattern B", // click, variable column
-      desc: "Click a top-level item to open a panel sized to its content. An underline grows on hover to show the item is clickable. On mobile, the menu drawer uses accordions, and each section starts with a View all link.",
+      desc: "Click a top-level item to open a panel sized to its content. An underline grows on hover to show the item is clickable. On mobile, the menu drawer uses accordions, and each section starts with an Explore or All link.",
     },
     full: {
       label: "Pattern C", // click, full width
@@ -17,7 +17,7 @@
     textlinks: {
       base: "variable", // shares B's desktop layout and behaviour
       label: "Pattern D", // click, text links + image
-      desc: "Like B, but every level 2 item is a plain text link, and each section's View all link is paired with a placeholder image. On mobile, the menu drawer uses B's accordions, with search at the top and the buttons fixed to the bottom.",
+      desc: "Like B, but every level 2 item is a plain text link, and each section's Explore or All link is paired with a placeholder image. On mobile, the menu drawer uses B's accordions, with search at the top and the buttons fixed to the bottom.",
     },
   };
 
@@ -89,7 +89,7 @@
     }
     if (pattern === "textlinks") {
       // D: text links only (feature links become list items, no tiles), and the
-      // View all link is an image + link group. Resources has no View all, so no image.
+      // Explore/All link is an image + link group. Resources has none, so no image.
       const cols = listGroups(item, pattern).map((g, i) => `<div class="panel-col">${groupHTML(g, i + 1)}</div>`);
       return `<div class="panel panel--mega" data-id="${item.id}" id="panel-${item.id}">
         <div class="panel-inner">
@@ -167,7 +167,7 @@
   function drawerHTML(pattern) {
     // Mobile structure per pattern:
     //   A (hover)    accordion; the label goes to the page, the chevron expands
-    //   B (variable) accordion; the whole row expands, and each section starts with View/All
+    //   B (variable) accordion; the whole row expands, and each section starts with Explore/All
     //   C (full)     drill-down into a level 2 panel
     const rowHTML = {
       hover: (it) => `<li class="acc-item" data-id="${it.id}">
