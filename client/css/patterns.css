@@ -1,0 +1,170 @@
+/* ---------- Panel shell (shared by all desktop patterns) ----------
+   One shell element holds every panel. nav.js positions it, swaps the
+   active panel and animates its size/position between items. */
+.panel-shell {
+  position: absolute; top: 100%; left: 0; z-index: 2;
+  width: max-content; max-width: 100%;
+  background: #fff; color: var(--c-ink);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.panel-shell[hidden] { display: none; }
+.panel-stack { position: relative; }
+.panel { display: none; }
+.panel.is-active { display: block; }
+.panel.is-leaving {
+  display: block; position: absolute; top: 0; left: 0;
+  pointer-events: none;
+  animation: panel-out var(--dur-fast) ease forwards;
+}
+@keyframes panel-out { to { opacity: 0; } }
+.panel.is-entering .stagger {
+  animation: item-in var(--dur) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 25ms + 40ms);
+}
+
+/* ---------- 1. Hover — single column ---------- */
+.panel--list .panel-inner { min-width: var(--list-panel-w); padding: 22px 24px; }
+/* The dropdown overlays the bottom of the nav bar instead of hanging below it */
+[data-pattern="hover"] .panel-shell { top: calc(100% - var(--list-panel-overlap)); }
+
+/* Level 1 items are links: pressed state while clicking */
+[data-pattern="hover"] .nav-trigger { transition: color var(--dur-fast) ease; }
+[data-pattern="hover"] a.nav-trigger:active { color: var(--c-nav-pressed); }
+[data-pattern="hover"] a.nav-trigger:active .nav-label::after { transform: scaleX(1); }
+
+/* Resources is label-only: no underline or pressed state, and it greys out
+   while its menu is open, returning to default when the menu collapses */
+[data-pattern="hover"] .nav-trigger--label { cursor: default; }
+[data-pattern="hover"] .nav-trigger--label .nav-label::after { display: none; }
+[data-pattern="hover"] .nav-trigger--label[aria-expanded="true"] { color: var(--c-nav-disabled); }
+
+/* ---------- 2 + 3. Click panels (shared) ----------
+   Sizes come from tokens (measured from the Figma frames); only layout differs per pattern. */
+.panel--mega .panel-inner {
+  display: flex; align-items: flex-start;
+  /* Bottom matches the space above the card so the panel reads evenly */
+  padding-top: var(--panel-pad-y); padding-bottom: calc(var(--panel-pad-y) + var(--card-offset));
+}
+.panel-title {
+  display: inline-block; white-space: nowrap;
+  font-size: var(--fs-panel-title); font-weight: 500; line-height: 1.2; letter-spacing: var(--ls-ui);
+  text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1.5px;
+  transition: text-underline-offset var(--dur-fast) ease;
+}
+.panel-title:hover { text-underline-offset: 8px; }
+.panel-title-col { flex: none; }
+/* Fixed-width columns; content sits at the left of each */
+/* Columns are at least one grid column wide and grow for long labels */
+.panel-col { flex: none; min-width: var(--panel-col-w); padding-right: 24px; }
+.panel-title-col { padding-top: calc(var(--card-offset) - var(--fs-panel-title) * 0.2365); }
+
+/* Level 2 rows: one row per link or label, so columns share a baseline grid with the card */
+.panel--mega .eyebrow {
+  line-height: var(--row-h); padding: 0;
+  /* the smaller label's cap height is moved up to where a level 2 link's would be */
+  position: relative; top: calc(-0.3635 * (var(--fs-l2) - var(--fs-panel-eyebrow)));
+}
+.panel--mega .nav-link {
+  font-size: var(--fs-l2); font-weight: 600; line-height: var(--row-h); padding: 0;
+  white-space: nowrap;
+  background: none;
+  text-decoration: underline; text-decoration-color: transparent;
+  text-underline-offset: 5px; text-decoration-thickness: 1px;
+  transition: text-decoration-color var(--dur-fast) ease;
+}
+.panel--mega .nav-link:hover,
+.panel--mega .nav-link:focus-visible { text-decoration-color: currentColor; }
+/* Rows are exactly their line-height (no inline strut from the list item) */
+.panel--mega .link-list > li { display: flex; flex-direction: column; align-items: flex-start; }
+/* Level 3: smaller, lighter and tighter, pulled up under the parent link */
+.panel--mega .link-list--sub {
+  margin: calc((var(--l3-row-h) - var(--row-h)) / 2) 0 0; padding-left: 16px;
+}
+.panel--mega .link-list--sub .nav-link { font-size: var(--fs-link); font-weight: 400; line-height: var(--l3-row-h); padding: 0; }
+
+/* Feature cards (B + C): stacked (image, title, description) or a grey tile */
+.feature-card {
+  flex: none; width: var(--card-w); height: var(--card-h); margin-top: var(--card-offset);
+  display: flex; flex-direction: column; position: relative;
+}
+.feature-media { background: var(--c-placeholder); transition: background var(--dur) ease; }
+.feature-title { font-size: var(--fs-card-title); font-weight: 600; letter-spacing: var(--ls-ui); line-height: 20px; }
+.feature-desc { font-size: var(--fs-card-desc); line-height: 18px; color: #333; margin-top: 4px; }
+.feature-card:hover .feature-media { background: var(--c-placeholder-2); }
+/* Image fills what the title + description leave (112px at full size) */
+.feature-card--stacked .feature-media { flex: 1; min-height: 0; margin-bottom: 8px; }
+.feature-card--tile {
+  padding: var(--card-pad);
+  justify-content: flex-end; white-space: nowrap;
+  background: var(--c-placeholder);
+  transition: background var(--dur) ease;
+}
+.feature-card--tile:hover { background: var(--c-placeholder-2); }
+.feature-card + .feature-card { margin-left: 24px; }
+.feature-card--tile .feature-title { font-weight: 500; }
+.feature-card--tile .feature-media { display: none; }
+
+/* ---------- 2. Click — variable column ---------- */
+[data-pattern="variable"] .panel--mega .panel-inner { padding-left: var(--panel-pad-l); padding-right: var(--panel-pad-r); }
+[data-pattern="variable"] .panel-title-col { width: var(--panel-col-w); }
+[data-pattern="variable"] .panel-title-col.is-empty { display: none; }
+
+/* ---------- 3. Click — full width ---------- */
+[data-pattern="full"] .panel-shell { right: 0; width: auto; max-width: none; }
+[data-pattern="full"] .panel.is-leaving { right: 0; }
+[data-pattern="full"] .panel--mega .panel-inner {
+  max-width: var(--max); margin: 0 auto; padding-left: var(--gutter); padding-right: var(--gutter);
+}
+[data-pattern="full"] .panel-title-col { width: var(--panel-title-w-full); }
+/* A spaces sub-links like regular links */
+[data-pattern="hover"] .panel .link-list--sub .nav-link { padding: var(--link-pad) 0; }
+[data-pattern="hover"] .panel .link-list--sub { margin: 0; }
+
+/* ---------- 4. D — B's layout, text links only, View all as an image + link group ---------- */
+[data-variant="textlinks"] .panel-feature {
+  flex: none; display: flex; flex-direction: column;
+  /* same footprint as a card, so 4-row columns still align top and bottom with it */
+  width: var(--card-w); height: var(--card-h); margin-top: var(--card-offset);
+  margin-right: calc(var(--panel-col-w) - var(--card-w));
+}
+.panel-feature .feature-media {
+  flex: 1; min-height: 0; margin-bottom: 12px;
+  display: grid; place-items: center; color: #b3b6bc;
+  transition: background var(--dur) ease;
+}
+.panel-feature:hover .feature-media { background: var(--c-placeholder-2); }
+.panel-feature .panel-title { align-self: flex-start; }
+.placeholder-icon { width: 32px; height: 32px; }
+
+/* D composition (design audit):
+   - columns size to their content and are separated by one wide, consistent gutter
+     (96px @1440), instead of a fixed 250px pitch that left 24-116px of uneven space
+   - equal, more generous panel padding on both sides, and more air above and below
+   - hierarchy (L1 > L2 > L3): View all is the largest and heaviest text (30px/600);
+     L2 links are medium (18px/500); L3 child links are regular and a step quieter in
+     colour; column labels are medium weight with more tracking */
+body[data-variant="textlinks"] .panel--mega .panel-inner {
+  gap: var(--panel-gutter);
+  /* Equal visible space above the first line and below the last. Each row's line box
+     already overhangs its text by --card-offset top and bottom, so subtract it. */
+  padding: calc(var(--panel-pad-y-d) - var(--card-offset)) var(--panel-pad-x-d);
+}
+body[data-variant="textlinks"] .panel-col { min-width: 0; padding-right: 0; }
+/* The image + View all group grows with a long title, so the title never eats into the gutter */
+body[data-variant="textlinks"] .panel-feature { margin-right: 0; width: max-content; min-width: var(--card-w); }
+body[data-variant="textlinks"] .panel-feature .panel-title {
+  font-size: var(--fs-panel-title-d); font-weight: 600; letter-spacing: 0;
+}
+body[data-variant="textlinks"] .panel--mega .link-list:not(.link-list--sub) > li > .nav-link { font-weight: 500; }
+body[data-variant="textlinks"] .panel--mega .link-list--sub .nav-link { color: var(--c-l3); }
+body[data-variant="textlinks"] .panel--mega .eyebrow { font-weight: 500; letter-spacing: 0.08em; }
+
+/* ---------- Client set ---------- */
+/* Pattern A: the Explore/All link heads the single column list */
+.panel--list .panel-all { display: inline-block; font-weight: 600; margin-bottom: 16px; }
+/* Pattern C: the Explore/All link is text only, so it takes no image footprint */
+body[data-variant="textlinks"] .panel-feature--text { height: auto; min-width: 0; }
+/* Patterns A and A – alt: unlabelled groups are desktop columns of one list (Products),
+   so they run on as one list here; otherwise COVE™ reads as part of the Walls group */
+.panel--list .link-group:not(.has-eyebrow) + .link-group:not(.has-eyebrow) { margin-top: 0; }

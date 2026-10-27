@@ -1,0 +1,440 @@
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--c-ink);
+  background: var(--c-page);
+  -webkit-font-smoothing: antialiased;
+}
+body.drawer-open { overflow: hidden; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+ul { list-style: none; margin: 0; padding: 0; }
+p, h1, h2, h3 { margin: 0; }
+:focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ---------- Icons ---------- */
+.icon { width: 16px; height: 16px; flex: none; }
+.chev { width: 10px; height: 10px; flex: none; transition: transform var(--dur) var(--ease-out); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 32px; padding: 0 14px;
+  font-size: var(--fs-sm); font-weight: 500; white-space: nowrap;
+  border: 1px solid transparent;
+  transition: background var(--dur-fast) ease, border-color var(--dur-fast) ease;
+}
+.btn-solid { background: var(--c-black); color: #fff; }
+.btn-solid:hover { background: #262626; }
+.btn-outline { border-color: rgba(255, 255, 255, 0.9); color: #fff; }
+.btn-outline:hover { background: rgba(255, 255, 255, 0.12); }
+
+.icon-btn {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: inline-grid; place-items: center;
+  border: 1.5px solid #fff; color: #fff;
+  transition: background var(--dur-fast) ease, transform var(--dur-fast) ease;
+}
+.icon-btn:hover { background: rgba(255, 255, 255, 0.14); }
+.close-btn { background: #fff; border-color: #fff; color: #1d2b5a; width: 28px; height: 28px; }
+.close-btn:hover { background: #fff; transform: rotate(90deg); }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--c-header); color: #fff;
+}
+.header-inner {
+  max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter);
+  height: var(--header-h);
+  display: grid; grid-template-columns: var(--logo-col) auto 1fr; align-items: center;
+}
+.logo { font-size: var(--fs-md); font-weight: 700; justify-self: start; }
+.site-header .header-inner > .logo { font-size: var(--fs-logo); letter-spacing: var(--ls-ui); }
+.nav-list { display: flex; gap: var(--nav-gap); }
+.nav-trigger {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: var(--header-h);
+  font-size: var(--fs-nav); font-weight: 600; letter-spacing: var(--ls-nav); white-space: nowrap;
+}
+.nav-label { position: relative; }
+/* Underline indicator: grows from the left on hover and stays while open */
+.nav-label::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform var(--dur) var(--ease-out);
+}
+.nav-trigger:hover .nav-label::after,
+.nav-trigger:focus-visible .nav-label::after,
+.nav-trigger[aria-expanded="true"] .nav-label::after { transform: scaleX(1); }
+.nav-trigger[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+.header-actions { justify-self: end; display: flex; align-items: center; gap: var(--actions-gap); margin-left: 24px; }
+.header-actions .btn { height: var(--btn-h); padding: 0 var(--btn-pad); font-size: var(--fs-btn); }
+.header-actions .search-btn { width: 34px; height: 34px; margin-left: 4px; }
+.menu-btn { display: none; }
+
+/* ---------- Shared link styles (desktop panels) ---------- */
+.eyebrow {
+  /* Label-only column titles are the one exception to sentence case: they stay in capitals */
+  font-size: var(--fs-eyebrow); letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--c-muted); margin-bottom: 8px;
+}
+.link-list { display: grid; gap: 2px; }
+.link-list--sub { margin: 2px 0 4px; padding-left: 16px; }
+.nav-link {
+  display: inline-block; padding: 5px 0;
+  font-size: 13px; font-weight: 500; line-height: 1.35;
+  background: linear-gradient(currentColor, currentColor) 0 calc(100% - 3px) / 0 1px no-repeat;
+  transition: background-size var(--dur) var(--ease-out);
+}
+.nav-link:hover, .nav-link:focus-visible { background-size: 100% 1px; }
+.link-group + .link-group { margin-top: 24px; }
+
+/* Desktop panel sizing (A, B, C) */
+/* Eyebrows get the same row height as links, so a menu starting with a label
+   has the same space above it as one starting with a link */
+.panel .eyebrow {
+  font-size: var(--fs-panel-eyebrow); letter-spacing: var(--ls-ui);
+  line-height: calc(var(--fs-link) * 1.35); margin: 0;
+  /* shifted up 2px so its cap height lines up with a 16px link's */
+  padding: calc(var(--link-pad) - 2px) 0 calc(var(--link-pad) + 2px);
+}
+.panel .link-list { gap: 0; }
+.panel .nav-link { font-size: var(--fs-link); letter-spacing: var(--ls-ui); padding: var(--link-pad) 0; }
+.panel .link-list--sub { margin: 0 0 6px; padding-left: 16px; }
+.panel .link-list--sub .nav-link { font-weight: 400; padding: 5px 0; }
+.panel .link-group + .link-group { margin-top: 42px; }
+
+/* ---------- Search field (drawer + footer newsletter) ---------- */
+.field {
+  display: flex; align-items: center; gap: 8px;
+  height: 46px; padding: 0 10px 0 14px;
+  background: #fff; color: var(--c-ink);
+}
+.field input {
+  flex: 1; min-width: 0; border: 0; outline: none; background: transparent;
+  font: inherit; font-size: var(--fs-md); color: var(--c-ink);
+}
+.field input::placeholder { color: #8a8d94; }
+.field-go {
+  width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--c-ink);
+  display: grid; place-items: center; flex: none;
+  transition: transform var(--dur-fast) ease;
+}
+.field-go:hover { transform: translateX(2px); }
+.field-go .icon { width: 14px; height: 14px; }
+.field-submit { font-size: var(--fs-sm); font-weight: 600; padding: 0 6px; }
+
+/* ---------- Mobile drawer ---------- */
+.scrim {
+  position: fixed; inset: 0; z-index: 90;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0; visibility: hidden;
+  transition: opacity var(--dur) ease, visibility 0s linear var(--dur);
+}
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 100;
+  width: var(--drawer-w);
+  background: var(--c-header); color: #fff;
+  overflow: hidden;
+  transform: translateX(100%); visibility: hidden;
+  transition: transform var(--dur) var(--ease-out), visibility 0s linear var(--dur);
+}
+/* Opening the mobile menu uses the same slower, smoother timing as the drill-down */
+body.drawer-open .scrim { opacity: 1; visibility: visible; transition: opacity var(--dur-drill) ease; }
+body.drawer-open .drawer { transform: none; visibility: visible; transition: transform var(--dur-drill) var(--ease-drill); }
+
+.drawer-track { position: relative; height: 100%; }
+.pane {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  background: var(--c-header);
+  transition: transform var(--dur-drill) var(--ease-drill), opacity var(--dur-drill) ease;
+}
+.pane-bar {
+  flex: none; height: var(--header-h-mobile); padding: 0 var(--gutter);
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--c-line);
+}
+.pane-bar .logo { font-size: var(--fs-logo); letter-spacing: var(--ls-ui); }
+.drawer .close-btn { width: var(--m-icon-btn); height: var(--m-icon-btn); }
+.drawer .close-btn .icon { width: 18px; height: 18px; }
+.pane-body {
+  flex: 1; overflow-y: auto; overscroll-behavior: contain;
+  display: flex; flex-direction: column;
+  padding: 32px var(--gutter) 32px;
+}
+.drawer-ctas { display: grid; grid-template-columns: 1fr 1fr; gap: var(--m-gap); margin-bottom: var(--m-gap); }
+.drawer-ctas .btn,
+.site-footer .footer-top .btn { font-size: var(--m-fs-btn); font-weight: 600; }
+.drawer-ctas .btn { height: var(--m-btn-h); }
+.drawer-search { margin-top: auto; padding-top: var(--m-section-gap); }
+/* D: search sits at the top of the list; the buttons stay fixed to the bottom of the drawer */
+.drawer-search--top { margin-top: 0; padding-top: 0; margin-bottom: var(--m-gap); }
+.drawer-ctas--sticky {
+  flex: none; margin: 0;
+  padding: var(--m-gap) var(--gutter) calc(var(--m-gap) + env(safe-area-inset-bottom));
+  background: var(--c-header); border-top: 1px solid var(--c-line);
+}
+/* Larger search / newsletter field on mobile */
+.drawer .field { height: var(--m-field-h); padding: 0 12px 0 16px; }
+.drawer .field input { font-size: var(--m-fs-field); }
+.drawer .field-go { width: 32px; height: 32px; }
+.drawer .field-go .icon { width: 18px; height: 18px; }
+
+.m-row {
+  width: 100%; min-height: var(--m-row-l1); display: flex; align-items: center; justify-content: space-between;
+  padding: 0 10px 0 0; font-size: var(--m-fs-row); font-weight: 600; letter-spacing: var(--ls-ui); text-align: left;
+}
+.m-row .chev { width: 12px; height: 12px; }
+.m-row .m-label {
+  text-decoration: underline; text-decoration-color: transparent;
+  text-underline-offset: 4px; text-decoration-thickness: 1.5px;
+  transition: text-decoration-color var(--dur-fast) ease;
+}
+/* Only A underlines a level 1 row: when its section is open, to show it's tappable */
+.acc-item.is-open a.acc-label { text-decoration-color: currentColor; }
+
+/* A accordion header: the label is its own tap target (goes to the level 1 page);
+   the chevron and the space before it expand the section */
+.acc-head { display: flex; align-items: stretch; min-height: var(--m-row-l1); }
+.acc-label {
+  display: flex; align-items: center; padding-right: 12px;
+  font-size: var(--m-fs-row); font-weight: 600; letter-spacing: var(--ls-ui);
+  text-decoration: underline; text-decoration-color: transparent;
+  text-underline-offset: 4px; text-decoration-thickness: 1.5px;
+  transition: text-decoration-color var(--dur-fast) ease, color var(--dur-fast) ease;
+}
+/* Resources isn't a page: no underline, and it greys out while open (as on desktop) */
+.acc-item.is-open .acc-label--static { text-decoration-color: transparent; color: var(--c-nav-disabled); }
+.acc-head .acc-trigger { flex: 1; display: flex; align-items: center; justify-content: flex-end; }
+.chev-circle {
+  width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid #fff;
+  display: grid; place-items: center;
+  transition: background var(--dur-fast) ease, transform var(--dur-fast) ease;
+}
+.chev-circle .chev { width: 12px; height: 12px; }
+
+/* Mobile menu content (accordion bodies + drill-down sub panels) */
+/* Rows: every item is exactly its row height (see the mobile spacing tokens) */
+.m-menu .eyebrow {
+  color: rgba(255, 255, 255, 0.85); font-size: var(--m-fs-eyebrow); letter-spacing: var(--ls-ui);
+  line-height: var(--m-row-label); margin: 0;
+}
+.m-menu .link-list { gap: 0; }
+.m-menu .link-list > li { display: flex; flex-direction: column; align-items: flex-start; }
+.m-menu .nav-link {
+  color: #fff; font-size: var(--m-fs-link); font-weight: 500; letter-spacing: var(--ls-ui);
+  line-height: var(--m-row-l2); padding: 0;
+  background-position: 0 calc(50% + 12px);
+}
+.m-menu .link-list--sub { margin: 0; padding-left: 16px; }
+.m-menu .link-list--sub .nav-link { font-weight: 400; line-height: var(--m-row-l3); background-position: 0 calc(50% + 12px); }
+/* One gap before each new group. View/All reads as the first link of the list,
+   so it only gets the gap when a column label follows it. */
+.m-menu .link-group + .link-group,
+.m-all + .link-group.has-eyebrow { margin-top: var(--m-gap); }
+/* Unlabelled groups are desktop columns of one list (Products), so they run on
+   as one list on mobile instead of leaving a gap after the first column */
+.m-menu .link-group:not(.has-eyebrow) + .link-group:not(.has-eyebrow) { margin-top: 0; }
+.m-menu .link-group.has-eyebrow .link-list { padding-left: 16px; }
+.m-all { display: inline-block; font-weight: 600 !important; }
+
+/* Accordion (hover pattern) */
+.acc-item {
+  margin: 0 calc(-1 * var(--gutter)); padding: 0 var(--gutter);
+  transition: background var(--dur) ease;
+}
+.acc-item.is-open { background: var(--c-header-2); }
+.acc-item.is-open .chev { transform: rotate(180deg); }
+.collapse { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--dur) var(--ease-out); }
+/* Menu accordions (A and B mobile) expand at the drill-down speed */
+.drawer .acc-item { transition: background var(--dur-drill) ease; }
+.drawer .collapse { transition: grid-template-rows var(--dur-drill) var(--ease-drill); }
+.drawer .acc-item .chev { transition: transform var(--dur-drill) var(--ease-drill); }
+.is-open > .collapse { grid-template-rows: 1fr; }
+.collapse > * { overflow: hidden; min-height: 0; }
+.acc-content { padding: var(--m-section-pad); padding-left: 16px; }
+/* A keeps bullets on child links (li is a flex row-box, so draw them) */
+.acc-content .link-list--sub .nav-link::before { content: "•"; display: inline-block; width: 14px; }
+
+/* Drill-down (click patterns) */
+.pane--sub { background: var(--c-header-2); transform: translateX(100%); }
+/* The level 1 label bar stays the darker grey, like the main drawer bar */
+.pane--sub .pane-bar { background: var(--c-header); }
+.drawer-track[data-level="1"] .pane--root { transform: translateX(-28%); opacity: 0.4; }
+.drawer-track[data-level="1"] .pane--sub { transform: none; }
+.back-btn { display: inline-flex; align-items: center; gap: 10px; font-size: var(--m-fs-link); letter-spacing: var(--ls-ui); }
+.back-btn .chev { width: 12px; height: 12px; transform: rotate(90deg); }
+
+.drill-body { padding-top: var(--m-panel-pad); padding-left: calc(var(--gutter) + 16px); }
+.drill-body .m-menu .nav-link { font-weight: 600; }
+.drill-body .m-menu .link-list--sub .nav-link { font-weight: 400; }
+/* Level 2 links settle in as the panel arrives */
+.drill-body .stagger { animation: item-in 400ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 70ms + 300ms); }
+
+/* ---------- Footer ---------- */
+.site-footer { background: var(--c-header); color: #fff; }
+/* Extra bottom padding keeps the prototype's switcher pill clear of the legal links */
+.footer-inner { max-width: var(--max); margin: 0 auto; padding: 28px var(--gutter) 80px; }
+.footer-top {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding-bottom: 18px; border-bottom: 1px solid var(--c-line);
+}
+.footer-headline { font-size: clamp(19px, 1.7vw, 24px); font-weight: 700; letter-spacing: -0.01em; }
+.footer-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.45fr);
+  gap: 32px; padding: 40px 0 64px;
+}
+.footer-heading { margin-bottom: 20px; }
+.footer-toggle {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  /* Footer column titles are labels too, so they share the capitals exception */
+  font-size: var(--fs-eyebrow); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  pointer-events: none; cursor: default;
+}
+.plus { display: none; position: relative; width: 14px; height: 14px; }
+.plus::before,
+.plus::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1.5px; margin-top: -0.75px;
+  background: currentColor; transition: transform var(--dur) var(--ease-out);
+}
+.plus::after { transform: rotate(90deg); }
+.footer-col.is-open .plus::after { transform: rotate(0deg); }
+.footer-col .collapse { grid-template-rows: 1fr; }
+.footer-links { display: grid; gap: 14px; font-size: 13.5px; letter-spacing: 0.01em; }
+.footer-links a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.footer-news-title { font-size: clamp(15px, 1.25vw, 18px); margin-bottom: 12px; }
+.footer-news .field-go { display: none; }
+.footer-bottom {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap;
+  font-size: 11px;
+}
+.legal { display: flex; gap: 6px 14px; flex-wrap: wrap; }
+.legal a:hover { text-decoration: underline; }
+
+/* ---------- Toast (prototype stand-in for navigation) ---------- */
+.toast {
+  position: fixed; left: 50%; top: 50%; z-index: 120; /* centred so it's easy to spot */
+  max-width: calc(100vw - 32px);
+  padding: 12px 18px; border-radius: 8px;
+  background: #111; color: #fff; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  font-size: 14px; font-weight: 500; letter-spacing: var(--ls-ui); white-space: nowrap;
+  opacity: 0; transform: translate(-50%, calc(-50% + 8px)); pointer-events: none;
+  transition: opacity var(--dur) ease, transform var(--dur) var(--ease-out);
+}
+.toast.is-visible { opacity: 1; transform: translate(-50%, -50%); }
+
+/* ---------- Page placeholder ---------- */
+.page { max-width: var(--max); margin: 0 auto; padding: 48px var(--gutter) 96px; }
+.page-intro { max-width: 640px; margin-bottom: 32px; }
+.page-intro h1 { font-size: clamp(26px, 3vw, 36px); letter-spacing: -0.02em; margin-bottom: 12px; }
+.page-intro p:last-child { font-size: 15px; line-height: 1.55; color: #3d4048; }
+.ph { background: var(--c-placeholder); }
+.ph-hero { height: clamp(220px, 34vw, 480px); margin-bottom: 24px; }
+.ph-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
+.ph-grid .ph { aspect-ratio: 4 / 3; }
+
+/* ---------- Pattern switcher ---------- */
+.switcher {
+  position: fixed; left: 50%; bottom: 16px; z-index: 80; transform: translateX(-50%);
+  display: flex; padding: 4px; border-radius: 999px;
+  background: #121212; box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+}
+.switcher button {
+  position: relative; z-index: 1;
+  padding: 8px 14px; border-radius: 999px;
+  font-size: var(--fs-sm); font-weight: 600; white-space: nowrap; color: #b9b9b9;
+  transition: color var(--dur) ease;
+}
+.switcher button:hover { color: #fff; }
+.switcher button[aria-pressed="true"] { color: #111; }
+.switcher-thumb {
+  position: absolute; top: 4px; bottom: 4px; left: 0; border-radius: 999px; background: #fff;
+  transition: transform var(--dur) var(--ease-out), width var(--dur) var(--ease-out);
+}
+
+@keyframes item-in { from { opacity: 0; transform: translateY(4px); } }
+
+/* ---------- Mobile / tablet (< 1024px) ---------- */
+@media (max-width: 1023.98px) {
+  .header-inner { height: var(--header-h-mobile); grid-template-columns: 1fr auto; }
+  .primary-nav, .header-actions .btn, .search-btn, .panel-shell { display: none !important; }
+  .menu-btn { display: inline-grid; width: var(--m-icon-btn); height: var(--m-icon-btn); }
+  .menu-btn .icon { width: 18px; height: 18px; }
+
+  /* Footer (sizes from the 375px Figma frames) */
+  .footer-inner { padding-top: 36px; }
+  .footer-headline { font-size: 22px; }
+  .footer-top { flex-direction: column; align-items: stretch; gap: 18px; padding-bottom: 24px; }
+  .footer-top .btn { height: var(--m-btn-h); }
+  .footer-grid { grid-template-columns: 1fr; gap: 0; padding: 28px 0 0; }
+  .footer-col { margin: 0 calc(-1 * var(--gutter)); transition: background var(--dur) ease; }
+  .footer-heading { margin: 0; }
+  .footer-toggle {
+    pointer-events: auto; cursor: pointer;
+    min-height: var(--m-row-l2); padding: 0 var(--gutter); font-size: var(--m-fs-eyebrow);
+  }
+  .plus { display: block; width: 16px; height: 16px; }
+  .footer-col .collapse { grid-template-rows: 0fr; background: var(--c-header-2); }
+  .footer-col.is-open .collapse { grid-template-rows: 1fr; }
+  .footer-links { gap: 0; padding: 0 var(--gutter); font-size: var(--m-fs-link); letter-spacing: var(--ls-ui); }
+  .footer-links a { display: block; line-height: var(--m-row-l2); padding: 0; }
+  .footer-news { padding-top: var(--m-section-gap); }
+  .footer-news-title { font-size: 18px; line-height: 24px; margin-bottom: 20px; }
+  .footer-news .field { height: var(--m-field-h); padding: 0 12px 0 16px; }
+  .footer-news .field input { font-size: var(--m-fs-field); }
+  .footer-news .field-go { width: 32px; height: 32px; }
+  .footer-news .field-go .icon { width: 18px; height: 18px; }
+  .footer-news .field-submit { display: none; }
+  .footer-news .field-go { display: grid; }
+  .footer-bottom {
+    flex-direction: column-reverse; align-items: flex-start; gap: var(--m-gap);
+    padding-top: var(--m-section-gap); font-size: 12px; letter-spacing: 0.04em;
+  }
+  .legal { flex-direction: column; gap: 0; }
+  .legal a, .footer-bottom > p { display: block; line-height: var(--m-row-l2); }
+}
+
+/* ---------- Mobile: no hover states, only tapped (:active) states ---------- */
+@media (max-width: 1023.98px) {
+  .site-header, .drawer, .site-footer { -webkit-tap-highlight-color: transparent; }
+
+  /* Cancel hover styles (touch browsers can leave them "stuck" after a tap) */
+  .btn-solid:hover { background: var(--c-black); }
+  .btn-outline:hover { background: transparent; }
+  .icon-btn:hover { background: transparent; }
+  .close-btn:hover { background: #fff; transform: none; }
+  .field-go:hover { transform: none; }
+  .nav-link:hover { background-size: 0 1px; }
+  .footer-links a:hover, .legal a:hover { text-decoration: none; }
+
+  /* Tapped states */
+  .m-row, .acc-label, .m-menu .nav-link, .back-btn, .footer-toggle, .footer-links a, .legal a {
+    transition: opacity 80ms ease;
+  }
+  a.acc-label:active { opacity: 0.55; }
+  .acc-trigger:active .chev-circle { background: rgba(255, 255, 255, 0.16); transform: scale(0.92); }
+  .m-row:active, .m-menu .nav-link:active, .back-btn:active,
+  .footer-toggle:active, .footer-links a:active, .legal a:active { opacity: 0.55; }
+  .btn-solid:active { background: #2b2b2b; }
+  .btn-outline:active { background: rgba(255, 255, 255, 0.16); }
+  .icon-btn:active { background: rgba(255, 255, 255, 0.16); transform: scale(0.92); }
+  .close-btn:active { background: #e6e6e6; transform: scale(0.92); }
+  .field-go:active { transform: scale(0.9); }
+}
+
+@media (max-width: 420px) {
+  .switcher button { padding: 8px 11px; }
+}

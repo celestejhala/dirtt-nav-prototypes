@@ -25,6 +25,17 @@ The switcher pill at the bottom of the page changes the pattern. Each pattern al
 | C – Click – full width + hover indicator | `index.html?pattern=full` | Opens on click. The panel spans the full width, and its columns line up with the nav. | Drill-down sub-panels |
 | D – Click – variable column, text links + image | `index.html?pattern=textlinks` | B's panel, with every level 2 item as a text link (no cards or tiles) and each Explore or All link paired with a placeholder image. COVE™ sits under the Walls group. | B's accordion, with search at the top and the buttons fixed to the bottom |
 
+## Client presentation set
+
+`client/` is a separate copy of the site for the client presentation, at <https://celestejhala.github.io/dirtt-nav-prototypes/client/>. Changes there don't affect the internal set above, which is also tagged `v1-internal`.
+
+| Pattern | Link | Desktop | Mobile |
+| --- | --- | --- | --- |
+| A | `client/index.html?pattern=a` | Internal A's single-column menu, opened by clicking, with the Explore or All link at the top | Internal D's drawer |
+| A – alt | `client/index.html?pattern=a-alt` | Internal A | Internal A |
+| B | `client/index.html?pattern=b` | Internal D | Internal D |
+| C | `client/index.html?pattern=c` | Internal D, with the Explore or All link as text only (no image) | Internal C's drill-down |
+
 The footer is the same in every pattern. On mobile its three link groups become an accordion that keeps only one section open at a time.
 
 ## Editing
