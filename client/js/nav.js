@@ -163,12 +163,12 @@
     };
     rowHTML.textlinks = rowHTML.variable; // D uses B's accordion
     const rows = DATA.nav.map(rowHTML[pattern]).join("");
-    const ctas = `<div class="drawer-ctas${pattern === "textlinks" ? " drawer-ctas--sticky" : ""}">
+    const ctas = `<div class="drawer-ctas">
               <a class="btn btn-solid" href="#">${DATA.ctas.primary}</a>
               <a class="btn btn-outline" href="#">${DATA.ctas.secondary}</a>
             </div>`;
     // Search is shown but not interactive in the client set
-    const searchForm = `<form class="drawer-search${pattern === "textlinks" ? " drawer-search--top" : ""}" role="search" onsubmit="return false" inert>
+    const searchForm = `<form class="drawer-search" role="search" onsubmit="return false" inert>
               <label class="field">
                 <span class="sr-only">Search</span>
                 <input type="search" placeholder="Enter search term" />
@@ -185,12 +185,7 @@
             <a class="logo" href="#">Logo</a>
             <button type="button" class="icon-btn close-btn" data-close aria-label="Close menu">${ICON.close}</button>
           </div>
-          ${
-            // D: search at the top of the list, buttons fixed to the bottom of the drawer
-            pattern === "textlinks"
-              ? `<div class="pane-body">${searchForm}<ul class="drawer-list">${rows}</ul></div>${ctas}`
-              : `<div class="pane-body">${ctas}<ul class="drawer-list">${rows}</ul>${searchForm}</div>`
-          }
+          <div class="pane-body">${searchForm}<ul class="drawer-list">${rows}</ul></div>
         </div>
         ${
           pattern !== "full"
@@ -204,6 +199,7 @@
               </div>`
         }
       </div>
+      ${ctas /* outside the track, so the buttons stay put while a drill-down slides */}
     </aside>`;
   }
 
